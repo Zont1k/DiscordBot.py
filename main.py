@@ -1,7 +1,9 @@
 import discord
 from discord.ext import commands
+from lib.db import db
+from decouple import config
 
-TOKEN = 'ODM4MTI1NTM5ODQ3NzAwNTIw.YI2jPA.BVXpSNmy29I1kXDf7U2hPylFAfs'
+TOKEN = config('TOKEN')
 bot = commands.Bot(command_prefix='!')
 
 @bot.event
