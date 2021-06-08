@@ -2,44 +2,46 @@ import discord
 from discord.ext import commands
 from decouple import config
 
-TOKEN = config('TOKEN')
-bot = commands.Bot(command_prefix='!')
+class AdminCommands(commands.Cog):
+    def __init__(self, client):
+        self.client = client
 
-#Clear command
-@bot.command( pass_context = True )
-@commands.has_permissions( administrator = True )
+    #Clear command
+    @commands.command( pass_context = True )
+    @commands.has_permissions( administrator = True )
+    async def clear( ctx, amount = 100):
+        await ctx.channel.purge( limit = amount )
 
-async def clear( ctx, amount = 100):
-    await ctx.channel.purge( limit = amount )
+    #kick command
+    @commands.command( pass_context = True )
+    @commands.has_permissions( administrator = True )
+    async def kick( ctx, member: discord.Member, *, reason = None):
+        await ctx.channel.purge( limit = 1)
 
-#kick command
-@bot.command( pass_context = True )
-@commands.has_permissions( administrator = True )
+        await member.kick( reason = reason )
 
-async def kick( ctx, member: discord.Member, *, reason = None):
-    await ctx.channel.purge( limit = 1)
+        embed = discord.Embed(title= f'kick user ```{ member.name }``` ' )
 
-    await member.kick( reason = reason )
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
 
-    embed = discord.Embed(title= f'kick user ```{ member.name }``` ' )
+        await ctx.send(embed=embed)
 
-    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
+    #Ban command
+    @commands.command( pass_context = True )
+    @commands.has_permissions( administrator = True )
+    async def ban( ctx, member: discord.Member, *, reason = None):
+        await ctx.channel.purge( limit = 1 )
 
-    await ctx.send(embed=embed)
+        await member.ban( reason = reason )
 
-#Ban command
-@bot.command( pass_context = True )
-@commands.has_permissions( administrator = True )
+        embed = discord.Embed(title= f'ban user ```{ member.mention }``` ')
 
-async def ban( ctx, member: discord.Member, *, reason = None):
-    await ctx.channel.purge( limit = 1 )
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
 
-    await member.ban( reason = reason )
+        await ctx.send(embed=embed)
 
-    embed = discord.Embed(title= f'ban user ```{ member.mention }``` ')
 
-    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
 
-    await ctx.send(embed=embed)
 
-bot.run( TOKEN )
+def setup(client):
+    client.add_cog(AdminCommands(client))
