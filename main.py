@@ -1,4 +1,4 @@
-import discord
+import discord, os
 from discord.ext import commands
 from lib.db import db
 from decouple import config
@@ -26,5 +26,19 @@ async def info(ctx):
     embed.set_thumbnail(url="https://image.freepik.com/vector-gratis/avatar-cara-monstruo-dibujos-animados-monstruo-halloween_6996-1122.jpg")
  
     await ctx.send(embed=embed)
+    
+@bot.command()
+async def load_extension(ctx, extension):
+    bot.load_extension(f'Cogs.{extension}')
+
+
+@bot.command()
+async def unload_extension(ctx, extension):
+    bot.unload_extension(f'Cogs.{extension}')
+
+
+for filename in os.listdir('./Cogs'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'Cogs.{filename[:-3]}')
 
 bot.run(TOKEN)
