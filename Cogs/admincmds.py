@@ -9,13 +9,13 @@ class AdminCommands(commands.Cog):
     #Clear command
     @commands.command( pass_context = True )
     @commands.has_permissions( administrator = True )
-    async def clear( ctx, amount = 100):
+    async def clear( self, ctx, amount = 100):
         await ctx.channel.purge( limit = amount )
 
     #kick command
     @commands.command( pass_context = True )
     @commands.has_permissions( administrator = True )
-    async def kick( ctx, member: discord.Member, *, reason = None):
+    async def kick(self, ctx, member: discord.Member, *, reason = None):
         await ctx.channel.purge( limit = 1)
 
         await member.kick( reason = reason )
@@ -29,7 +29,7 @@ class AdminCommands(commands.Cog):
     #Ban command
     @commands.command( pass_context = True )
     @commands.has_permissions( administrator = True )
-    async def ban( ctx, member: discord.Member, *, reason = None):
+    async def ban(self, ctx, member: discord.Member, *, reason = None):
         await ctx.channel.purge( limit = 1 )
 
         await member.ban( reason = reason )
