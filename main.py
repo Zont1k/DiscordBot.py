@@ -154,7 +154,7 @@ async def load_extension(ctx, extension):
 async def unload_extension(ctx, extension):
     bot.unload_extension(f'Cogs.{extension}')
 
-for filename in os.listdir(r"E:\Бэкап Леши 06.04.2021\GUFFI BOT\Новая папка\DiscordBotGuffi\Cogs"):
+for filename in os.listdir( os.path.abspath(os.curdir)+"\\DiscordBotGuffi\\Cogs"):
     if filename.endswith('.py'):
      bot.load_extension(f'Cogs.{filename[:-3]}')
 
