@@ -15,7 +15,7 @@ class OnReady(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
 
-        cogs = [x[:-3] for x in os.listdir('./Cogs')]
+        cogs = [x[:-3] for x in os.curdir+'/Cogs']
         for cogsname in cogs:
             if cogsname == "__pycach":
                 break
