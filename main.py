@@ -231,6 +231,14 @@ async def userinfo(ctx, *, user: discord.Member = None):
 ##########
 ##########
 
+@bot.event
+async def on_command_error(ctx,error):
+    f= open('errorlog.txt','a')
+    print(error)
+    print(ctx.message.content)
+    f.write('\n\nERROR: '+str(error)+'\nMessage: '+ctx.message.content+'\n_______________')
+    f.close()
+
 
 @bot.command()
 async def load_extension(ctx, extension):
@@ -240,7 +248,6 @@ async def load_extension(ctx, extension):
 @bot.command()
 async def unload_extension(ctx, extension):
     bot.unload_extension(f'Cogs.{extension}')
-
 
 for filename in os.listdir( os.path.abspath(os.curdir)+"\\DiscordBotGuffi\\Cogs"):
     if filename.endswith('.py'):
