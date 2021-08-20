@@ -144,6 +144,14 @@ async def user(ctx,member:discord.Member = None, guild: discord.Guild = None):
 ##########
 ##########
 
+@bot.event
+async def on_command_error(ctx,error):
+    f= open('errorlog.txt','a')
+    print(error)
+    print(ctx.message.content)
+    f.write('\n\nERROR: '+str(error)+'\nMessage: '+ctx.message.content+'\n_______________')
+    f.close()
+
 
 @bot.command()
 async def load_extension(ctx, extension):
