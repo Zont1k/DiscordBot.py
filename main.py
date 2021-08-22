@@ -6,13 +6,17 @@ from Cybernator import Paginator
 from asyncio import sleep
 from discord_components import DiscordComponents, Button, ButtonStyle
 
+import sqlite3
+
+
+
 
 TOKEN = config('TOKEN')
 bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520'])
 bot.remove_command("help")
 
-print(os.path.realpath(__file__)+'/Cogs')
-
+connection = sqlite3.connact('server.db')
+cursor = connection.cursor()
 
 
 #@bot.group(invoke_without_command=True)
@@ -84,6 +88,23 @@ async def help(ctx):
 
 @bot.event
 async def on_ready():
+    cursor.execute("""CREATE TABLE IF NOT EXISTS userrs (
+        name TEXT,
+        id INT,
+        cash DIGINT,
+        rep INT
+    )""")
+    connection.commit()
+    for guild in bot.guilds:
+        for member in guild.members:
+            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
+                cursor.execute(f"INSERT INTO users VALUES ('{member}', {member.id}, 0, 0, 0)")
+                connection.commit()
+            else:
+                pass
+
+    connection.commit()
+
     DiscordComponents(bot)
     while True:
           await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="| g.help"))
@@ -95,6 +116,22 @@ async def on_ready():
           await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Minecraft"))
           await sleep(15)
           print("I'm ready!")
+
+@bot.event
+async def on_member_join(member):
+            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
+                cursor.execute(f"INSERT INTO users VALUES ('{member}', {member.id}, 0, 0, 0)")
+                connection.commit()
+            else:
+                pass
+
+@bot.command(aliases = ['balance', 'bal'])
+async def __balance(ctx, member: discord.Member = None):
+    if member is None:
+        await ctx.send(embed = discord.Embed(
+            description = f"""Balance user **{ctx.author}** is"""
+        ))
+
 
 @bot.command()
 async def serverinfo(ctx):
@@ -222,6 +259,7 @@ async def userinfo(ctx, *, user: discord.Member = None):
     embed.add_field(name="Guild permissions", value=perm_string, inline=False)
     embed.set_footer(text='ID: ' + str(user.id))
     return await ctx.send(embed=embed)
+
 
 ##########
 ##########
