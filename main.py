@@ -1,4 +1,5 @@
 import discord, os
+from discord import Colour
 from discord.embeds import Embed
 from discord.ext import commands
 from decouple import config
@@ -7,6 +8,10 @@ from asyncio import sleep
 from discord_components import DiscordComponents, Button, ButtonStyle
 
 import sqlite3
+import html
+import requests
+import json
+import random
 
 
 
@@ -259,6 +264,54 @@ async def userinfo(ctx, *, user: discord.Member = None):
     embed.add_field(name="Guild permissions", value=perm_string, inline=False)
     embed.set_footer(text='ID: ' + str(user.id))
     return await ctx.send(embed=embed)
+
+
+
+
+##########
+##########
+###
+### Other commands 
+###
+##########
+##########
+
+
+@bot.command(pass_context= True)
+async def question(ctx):
+    question = json.loads(requests.get('https://opentdb.com/api.php?amount=1').text)['results']
+    if len(question) == 0:
+        question = json.loads(requests.get('https://opentdb.com/api.php?amount=1').text)['results']
+        if len(question) == 0 :
+            await ctx.send(embed = stuff.embed('Error to get a question for you',Colour.red()))
+            return
+    question = question[0]
+    question['question'] = html.unescape(question['question'])
+    question['correct_answer'] = html.unescape(question['correct_answer'])
+    posible_answers = question['incorrect_answers']
+    for i in range(len(posible_answers)):
+        posible_answers[i] = html.unescape(posible_answers[i])
+
+    posible_answers.append(question['correct_answer'])
+    random.shuffle(posible_answers)
+
+    await ctx.send(embed = Embed(title = 'QUIZ (you have 10 seconds for answer)',description = question['question'],color = Colour.gold()
+    ),components = [Button(style=ButtonStyle.blue, label=i) for i in posible_answers])
+
+    try:
+        response = await bot.wait_for("button_click",timeout=10.0)
+    except:
+        await ctx.send(embed = stuff.embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
+        return
+
+    if response.user == ctx.author:
+        if response.component.label == question['correct_answer']:
+            await response.respond(type = 5)
+            await ctx.send(embed = stuff.embed('The answer was: '+question['correct_answer'],Colour.green(),'Correct!'))
+        else:
+            await response.respond(type = 5)
+            await ctx.send(embed = stuff.embed('The answer was: '+question['correct_answer'],Colour.red(),'Incorrect!'))
+
 
 
 ##########
