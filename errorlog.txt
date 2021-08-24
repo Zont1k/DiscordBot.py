@@ -1,0 +1,110 @@
+
+
+ERROR: member is a required argument that is missing.
+Message: g.ban
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.balance
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.balance AlxelZot
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.balance <@!564380749873152004>
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.balance
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: AttributeError: 'Context' object has no attribute 'servers'
+Message: g.servers
+_______________
+
+ERROR: Command raised an exception: OperationalError: no such table: users
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.balance
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.balance AlxelZot
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: AttributeError: 'NoneType' object has no attribute 'id'
+Message: g.balance
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.bal
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.balance
+_______________
+
+ERROR: Command raised an exception: TypeError: 'NoneType' object is not subscriptable
+Message: g.balance
+_______________
+
+ERROR: Command "server" is not found
+Message: g.server
+_______________
+
+ERROR: Command "question" is not found
+Message: g.question
+_______________
+
+ERROR: Command "question" is not found
+Message: g.question
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+In embeds.0.fields.0.value: Must be 1024 or fewer in length.
+Message: g.popit
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+In embeds.0.fields.0.value: Must be 1024 or fewer in length.
+Message: g.popit
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+In embeds.0.fields.0.value: Must be 1024 or fewer in length.
+Message: g.popit
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+In embeds.0.fields.0.value: Must be 1024 or fewer in length.
+Message: g.popit
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50035): Invalid Form Body
+In embeds.0.fields.0.value: Must be 1024 or fewer in length.
+Message: g.popit
+_______________

@@ -6,17 +6,10 @@ from Cybernator import Paginator
 from asyncio import sleep
 from discord_components import DiscordComponents, Button, ButtonStyle
 
-import sqlite3
-
-
-
-
 TOKEN = config('TOKEN')
 bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520'])
 bot.remove_command("help")
 
-connection = sqlite3.connact('server.db')
-cursor = connection.cursor()
 
 
 #@bot.group(invoke_without_command=True)
@@ -48,7 +41,6 @@ async def test(ctx):
     embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/851162534483722301/873200179489148979/avatar-cara-monstruo-dibujos-animados-monstruo-halloween_6996-1122.jpg")
     embed2.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     await page.start()
-
 
 
 @bot.command()
@@ -88,25 +80,8 @@ async def help(ctx):
 
 @bot.event
 async def on_ready():
-    cursor.execute("""CREATE TABLE IF NOT EXISTS userrs (
-        name TEXT,
-        id INT,
-        cash DIGINT,
-        rep INT
-    )""")
-    connection.commit()
-    for guild in bot.guilds:
-        for member in guild.members:
-            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES ('{member}', {member.id}, 0, 0, 0)")
-                connection.commit()
-            else:
-                pass
-
-    connection.commit()
-
-    DiscordComponents(bot)
-    while True:
+        DiscordComponents(bot)
+        while True:
           await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="| g.help"))
           await sleep(15)
           await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz"))
@@ -116,21 +91,6 @@ async def on_ready():
           await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Minecraft"))
           await sleep(15)
           print("I'm ready!")
-
-@bot.event
-async def on_member_join(member):
-            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES ('{member}', {member.id}, 0, 0, 0)")
-                connection.commit()
-            else:
-                pass
-
-@bot.command(aliases = ['balance', 'bal'])
-async def __balance(ctx, member: discord.Member = None):
-    if member is None:
-        await ctx.send(embed = discord.Embed(
-            description = f"""Balance user **{ctx.author}** is"""
-        ))
 
 
 @bot.command()
@@ -147,13 +107,14 @@ async def serverinfo(ctx):
   embed = discord.Embed(
       title=name + " Server Information",
       description=description,
-      color=discord.Color.blue(),
-      timestamp=ctx.message.created_at
+      timestamp=ctx.message.created_at,
+      color=discord.Color.blue()
     )
   embed.set_thumbnail(url=icon)
-  embed.add_field(name="👑 Owner", value=ctx.guild.owner, inline=False)
+  embed.add_field(name="👑 Owner", value=ctx.guild.owner, inline=True)
+  embed.add_field(name="Status:", value=ctx.member.count.status, inline=True)
   embed.add_field(name='💡“`CSS Number of roles', value=str(role_count), inline=False)
-  embed.add_field(name="💻 Server ID", value=id, inline=False)
+  embed.add_field(name="💻 Server ID", value=id, inline=True)
   embed.add_field(name="📍 Region", value=region[0].upper()+ region[1::], inline=True)
   embed.add_field(name="🙎 Member Count", value=memberCount, inline=False)
   embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
@@ -167,9 +128,6 @@ async def serverinfo(ctx):
 ##########
 ##########
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('Pong! {0}'.format(round(bot.latency, 1)))
 
 @bot.command()
 async def info(ctx):
@@ -183,6 +141,18 @@ async def info(ctx):
             embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
 
             await ctx.send(embed=embed)
+
+
+@bot.command()
+async def popit(ctx):
+            embed = discord.Embed(title="Mini game Pop-It 🎮", color=discord.Color.blue(), timestamp=ctx.message.created_at)
+
+            embed.add_field(name=" ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ", value="│||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||│\n │||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||│\n │||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||│\n │||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||│\n │||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||│\n │||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||│")
+
+            embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
+
+            await ctx.send(embed=embed)
+
 
 @bot.command()
 async def invite(ctx):
@@ -287,7 +257,7 @@ async def load_extension(ctx, extension):
 async def unload_extension(ctx, extension):
     bot.unload_extension(f'Cogs.{extension}')
 
-for filename in os.listdir( os.path.abspath(os.curdir)+"\\DiscordBotGuffi\\Cogs"):
+for filename in os.listdir( os.path.abspath(os.curdir)+"\\Cogs"):
     if filename.endswith('.py'):
         bot.load_extension(f'Cogs.{filename[:-3]}')
 
