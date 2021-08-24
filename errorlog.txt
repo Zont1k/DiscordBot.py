@@ -108,3 +108,39 @@ ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 
 In embeds.0.fields.0.value: Must be 1024 or fewer in length.
 Message: g.popit
 _______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: Command raised an exception: AttributeError: 'Message' object has no attribute 'server'
+Message: g.server
+_______________
+
+ERROR: Command raised an exception: AttributeError: 'Message' object has no attribute 'server'
+Message: g.server
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________
+
+ERROR: stuff is a required argument that is missing.
+Message: g.question
+_______________

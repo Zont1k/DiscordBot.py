@@ -6,19 +6,12 @@ from decouple import config
 from Cybernator import Paginator
 from asyncio import sleep
 from discord_components import DiscordComponents, Button, ButtonStyle
-
-<<<<<<< HEAD
-=======
 import sqlite3
 import html
 import requests
 import json
 import random
 
-
-
-
->>>>>>> ca6b332f25985971762bacbd17b7f2672871b031
 TOKEN = config('TOKEN')
 bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520'])
 bot.remove_command("help")
@@ -38,22 +31,10 @@ bot.remove_command("help")
     #await ctx.send(embed = em)
 
 @bot.command()
-async def servers(ctx):
+async def srv(ctx):
         context = len(ctx.servers)
         await ctx.say(f"Connected on {str(len(context))} servers:")
-        await ctx.say('\n'.join(server.name for server in servers))
-
-@bot.command()
-async def test(ctx):
-    embed2 = discord.Embed(title="≫ Command list ≪", description="**General » g.help General**\n ```g.info``````g.invite``````g.ping``````g.support```\n **Moderation » +help Moderation**\n ```g.ban``````g.clear``````g.mute``````g.kick``````g.warn``````g.add-role```", color=discord.Color.blue())
-    embed1 = discord.Embed(title="Help menu", description="To navigate the pages, use\n buttons below. If for some reason they are not on your device\n are displayed, please update / reinstall the Discord app.", color=discord.Color.blue()) 
-    embeds = [embed1, embed2]
-    message = await ctx.send(embed=embed1)
-    page = Paginator(bot, message, only=ctx.author, use_more=False, embeds=embeds)
-    await ctx.send(f'https://discord.gg/wgYFxEHr5q')
-    embed1.set_thumbnail(url="https://cdn.discordapp.com/attachments/851162534483722301/873200179489148979/avatar-cara-monstruo-dibujos-animados-monstruo-halloween_6996-1122.jpg")
-    embed2.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-    await page.start()
+        await ctx.say('\n'.join(server.name for server in srv))
 
 
 @bot.command()
@@ -107,32 +88,31 @@ async def on_ready():
 
 
 @bot.command()
-async def serverinfo(ctx):
-  name = str(ctx.guild.name)
-  description = str(ctx.guild.description)
-  id = str(ctx.guild.id)
-  role_count = len(ctx.guild.roles)
-  region = str(ctx.guild.region)
-  memberCount = str(ctx.guild.member_count)
+async def server(ctx):
+        """Shows server info"""
 
-  icon = str(ctx.guild.icon_url)
-   
-  embed = discord.Embed(
-      title=name + " Server Information",
-      description=description,
-      timestamp=ctx.message.created_at,
-      color=discord.Color.blue()
-    )
-  embed.set_thumbnail(url=icon)
-  embed.add_field(name="👑 Owner", value=ctx.guild.owner, inline=True)
-  embed.add_field(name="Status:", value=ctx.member.count.status, inline=True)
-  embed.add_field(name='💡“`CSS Number of roles', value=str(role_count), inline=False)
-  embed.add_field(name="💻 Server ID", value=id, inline=True)
-  embed.add_field(name="📍 Region", value=region[0].upper()+ region[1::], inline=True)
-  embed.add_field(name="🙎 Member Count", value=memberCount, inline=False)
-  embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
+        server = ctx.message.server
 
-  await ctx.send(embed=embed)
+        roles = str(len(server.roles))
+        emojis = str(len(server.emojis))
+        channels = str(len(server.channels))
+
+        embed = discord.Embed(title=server.name, description='Server Info', color=0xEE8700)
+        embed.set_thumbnail(url=server.icon_url)
+        embed.add_field(name="Created on:", value=server.created_at.strftime('%d %B %Y at %H:%M UTC+3'), inline=False)
+        embed.add_field(name="Server ID:", value=server.id, inline=False)
+        embed.add_field(name="Users on server:", value=server.member_count, inline=True)
+        embed.add_field(name="Server owner:", value=server.owner, inline=True)
+
+        embed.add_field(name="Default Channel:", value=server.default_channel, inline=True)
+        embed.add_field(name="Server Region:", value=server.region, inline=True)
+        embed.add_field(name="Verification Level:", value=server.verification_level, inline=True)
+
+        embed.add_field(name="Role Count:", value=roles, inline=True)
+        embed.add_field(name="Emoji Count:", value=emojis, inline=True)
+        embed.add_field(name="Channel Count:", value=channels, inline=True)
+
+        await ctx.send(embed=embed)
 ##########
 ##########
 ###
@@ -254,14 +234,13 @@ async def userinfo(ctx, *, user: discord.Member = None):
 ##########
 ##########
 
-
 @bot.command(pass_context= True)
 async def question(ctx):
     question = json.loads(requests.get('https://opentdb.com/api.php?amount=1').text)['results']
     if len(question) == 0:
         question = json.loads(requests.get('https://opentdb.com/api.php?amount=1').text)['results']
         if len(question) == 0 :
-            await ctx.send(embed = stuff.embed('Error to get a question for you',Colour.red()))
+            await ctx.send(embed=embed('Error to get a question for you',Colour.red()))
             return
     question = question[0]
     question['question'] = html.unescape(question['question'])
@@ -279,18 +258,25 @@ async def question(ctx):
     try:
         response = await bot.wait_for("button_click",timeout=10.0)
     except:
-        await ctx.send(embed = stuff.embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
+        await ctx.send(embed = embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
         return
 
     if response.user == ctx.author:
         if response.component.label == question['correct_answer']:
             await response.respond(type = 5)
-            await ctx.send(embed = stuff.embed('The answer was: '+question['correct_answer'],Colour.green(),'Correct!'))
+            await ctx.send(embed = embed('The answer was: '+question['correct_answer'],Colour.green(),'Correct!'))
         else:
             await response.respond(type = 5)
-            await ctx.send(embed = stuff.embed('The answer was: '+question['correct_answer'],Colour.red(),'Incorrect!'))
-
-
+            await ctx.send(embed = embed('The answer was: '+question['correct_answer'],Colour.red(),'Incorrect!'))
+def embed(text,color = Colour.gold(),title ='',emoji = ''):
+        if color == Colour.red():
+            emoji = ":x:"
+        elif color == Colour.green():
+            emoji = ":white_check_mark:"
+        if len(list(emoji))!=0:
+            emoji +='| '
+        embed = discord.Embed(description =  emoji+'**'+text+"**" , color = color, title = title)
+        return embed
 
 ##########
 ##########
