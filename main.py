@@ -30,23 +30,30 @@ bot.remove_command("help")
 
     #await ctx.send(embed = em)
 
-@bot.command()
-async def srv(ctx):
-        context = len(ctx.servers)
-        await ctx.say(f"Connected on {str(len(context))} servers:")
-        await ctx.say('\n'.join(server.name for server in srv))
 
+@bot.command()
+async def ping(ctx):
+     await ctx.send(f'Pong! In {round(bot.latency * 1000)}ms')
 
 @bot.command()
 async def help(ctx):
     await ctx.send(
     embed=discord.Embed(title="Help menu", description="To navigate the pages, use\n buttons below. If for some reason they are not on your device\n are displayed, please update / reinstall the Discord app.", color=discord.Color.blue(), timestamp=ctx.message.created_at),
     components=[
+            Button(style=ButtonStyle.blue, label="Start", emoji="▶️"),
+        ]
+    )
+    response = await bot.wait_for("button_click")
+    if response.channel == ctx.channel:
+        if response.component.label == "Start":
+            await response.respond(
+            embed = discord.Embed(title="⚙️ Guffi", description=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n функциями.  \n **Key Resources**\n  1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**  \n **Developers**\n *`AalbatrossGuy#2021`*\n *`AlxelZot#1111`*\n *`ilesik#6666`*", color=discord.Color.blue(), timestamp=ctx.message.created_at),
+            components=[
             Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
-        ]
-    )
+                ]    
+            ) 
     await ctx.send(f'https://discord.gg/wgYFxEHr5q'),
     response = await bot.wait_for("button_click")
     if response.channel == ctx.channel:
@@ -54,8 +61,9 @@ async def help(ctx):
             await response.respond(
             embed = discord.Embed(title="⚙️ Guffi", description=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n функциями.  \n **Key Resources**\n  1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**  \n **Developers**\n *`AalbatrossGuy#2021`*\n *`AlxelZot#1111`*\n *`ilesik#6666`*", color=discord.Color.blue(), timestamp=ctx.message.created_at),
             components=[
-                    Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
-                    Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
                 ]    
             ) 
     response = await bot.wait_for("button_click")
@@ -64,27 +72,34 @@ async def help(ctx):
             await response.respond(
             embed = discord.Embed(title="≫ Command list ≪", description="**General » g.help General**\n `g.info` `g.invite` `g.ping` `g.support`\n **Moderation » +help Moderation**\n `g.ban` `g.clear` `g.mute` `g.kick` `g.warn`\n `g.add-role`", color=discord.Color.blue(), timestamp=ctx.message.created_at),
             components=[
-                    Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
-                    Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
                 ]     
             )
+
         
+
 
 
 
 @bot.event
 async def on_ready():
-        DiscordComponents(bot)
-        while True:
-          await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="| g.help"))
-          await sleep(15)
-          await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz"))
-          await sleep(15)
-          await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Spotify"))
-          await sleep(15)
-          await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Minecraft"))
-          await sleep(15)
-          print("I'm ready!")
+    DiscordComponents(bot)
+    print("Bot is ready!")
+    while not bot.is_closed():
+        await bot.change_presence(activity=discord.Game(name=f"{len(bot.guilds)} servers!"))
+        await sleep(15)
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="| g.help"))
+        await sleep(15)
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz"))
+        await sleep(15)
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Spotify"))
+        await sleep(15)
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Minecraft"))
+        await sleep(15)
+        print("I'm ready!")
+
 
 
 @bot.command()
@@ -126,7 +141,7 @@ async def server(ctx):
 async def info(ctx):
             embed = discord.Embed(title="⚙️ Guffi", color=discord.Color.blue(), timestamp=ctx.message.created_at)
 
-            embed.add_field(name="```v0.0.1```", value=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n функциями.", inline=False)
+            embed.add_field(name="```v0.0.1```", value=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n functions.", inline=False)
             embed.add_field(name="Key Resources", value=f" 1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**", inline=True)
     
             embed.add_field(name="Developers", value="*AalbatrossGuy#2021*\n *AlxelZot#1111*\n *ilesik#6666*", inline=True)
@@ -140,7 +155,7 @@ async def info(ctx):
 async def popit(ctx):
             embed = discord.Embed(title="Mini game Pop-It 🎮", color=discord.Color.blue(), timestamp=ctx.message.created_at)
 
-            embed.add_field(name=" ▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁ ", value="│||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||│\n │||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||│\n │||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||│\n │||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||│\n │||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||│\n │||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||│")
+            embed.add_field(name="`Click on the squares`", value=" │||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||||:orange_square:||│\n│||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||||:blue_square:||│\n│||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||||:yellow_square:||│\n│||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||||:white_large_square:||│\n│||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||||:green_square:||│\n│||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||||:purple_square:||│")
 
             embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
 
@@ -252,7 +267,7 @@ async def question(ctx):
     posible_answers.append(question['correct_answer'])
     random.shuffle(posible_answers)
 
-    await ctx.send(embed = Embed(title = 'QUIZ (you have 10 seconds for answer)',description = question['question'],color = Colour.gold()
+    await ctx.send(embed = Embed(title = 'QUIZ (you have 10 seconds for answer)',description = question['question'],color = Colour.blue()
     ),components = [Button(style=ButtonStyle.blue, label=i) for i in posible_answers])
 
     try:

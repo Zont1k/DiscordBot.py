@@ -144,3 +144,15 @@ _______________
 ERROR: stuff is a required argument that is missing.
 Message: g.question
 _______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50006): Cannot send an empty message
+Message: g.help
+_______________
+
+ERROR: Command raised an exception: HTTPException: 400 Bad Request (error code: 50006): Cannot send an empty message
+Message: g.help
+_______________
+
+ERROR: Command "ping" is not found
+Message: g.ping
+_______________
