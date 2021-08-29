@@ -268,12 +268,15 @@ async def question(ctx):
     random.shuffle(posible_answers)
 
     await ctx.send(embed = Embed(title = 'QUIZ (you have 10 seconds for answer)',description = question['question'],color = Colour.blue()
-    ),components = [Button(style=ButtonStyle.blue, label=i) for i in posible_answers])
+    ),components = [Button(style=ButtonStyle.blue, label=i, id = str(ctx.author.id)+i) for i in posible_answers])
 
     try:
-        response = await bot.wait_for("button_click",timeout=10.0)
+        while True:
+            response = await bot.wait_for("button_click",timeout=10.0)
+            if ctx.author == response.user and ctx.channel == response.channel and response.component.label in posible_answers and str(ctx.author.id) in response.component.id : 
+                break
     except:
-        await ctx.send(embed = embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
+        await ctx.send(embed = stuff.embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
         return
 
     if response.user == ctx.author:
