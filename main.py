@@ -11,6 +11,7 @@ import html
 import requests
 import json
 import random
+import tic_tac_toe as ttt
 
 TOKEN = config('TOKEN')
 bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520'])
@@ -276,7 +277,7 @@ async def question(ctx):
             if ctx.author == response.user and ctx.channel == response.channel and response.component.label in posible_answers and str(ctx.author.id) in response.component.id : 
                 break
     except:
-        await ctx.send(embed = stuff.embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
+        await ctx.send(embed = embed('Correct answer was: '+question['correct_answer'],Colour.red(),'TIME OUT'))
         return
 
     if response.user == ctx.author:
@@ -286,6 +287,53 @@ async def question(ctx):
         else:
             await response.respond(type = 5)
             await ctx.send(embed = embed('The answer was: '+question['correct_answer'],Colour.red(),'Incorrect!'))
+
+
+
+@bot.command()
+async def tic_tac_toe(ctx):
+    def buttons():
+       return [[Button(id = json.dumps([i,b]) ,style=(ButtonStyle.blue if field.get_map()[i][b] =='-' else (ButtonStyle.green if field.get_map()[i][b] == 'x' else ButtonStyle.red)), label=field.get_map()[i][b]) for b in range(len(field.get_map()[i]))] for i in range(3)]
+
+    # generate game and bot 
+    field = ttt.Field(clear_place_sign = '-')
+    ttt_bot = ttt.Bot(field)
+    if not field.is_payer_turn():
+        ttt_bot.make_move()
+    message = await ctx.send(embed = Embed(title = 'Game "Tic Tac Toe" (30 seconds per stroke)',color = Colour.gold()),
+    components = buttons())
+    try:
+        while True:
+            response = await bot.wait_for("button_click",timeout = 30.0)
+            if response.component.label != '-':
+                await response.respond(type = 4,embed = embed('Place already taken, try other one',Colour.red(),'Stroke error'))
+            elif ctx.author == response.user and ctx.channel == response.channel:
+                await response.respond(type = 7)
+                ch = field.make_move(json.loads(response.component.id))
+                if ch:
+                    await message.edit(components = buttons())
+                    if ch == 'draw':
+                        await ctx.send(embed = embed('You play like bot',Colour.green(),'Draw'))
+                        return
+                    await ctx.send(embed = embed('Congratulations!!!',Colour.green(),'You won'))
+                    return
+                ch = ttt_bot.make_move()
+                if ch:
+                    await message.edit(components = buttons())
+                    if ch == 'draw':
+                        await ctx.send(embed = embed('You play like bot',Colour.green(),'Draw'))
+                        return
+                    await ctx.send(embed = embed('We are sorry',Colour.red(),'You lose'))
+                    return
+                await message.edit(components = buttons())   
+    except:
+        await ctx.send(embed = embed('Game was due your innactivity',Colour.red(),'Time over'))
+
+
+
+
+
+
 def embed(text,color = Colour.gold(),title ='',emoji = ''):
         if color == Colour.red():
             emoji = ":x:"
