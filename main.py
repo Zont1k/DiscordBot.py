@@ -109,7 +109,7 @@ async def on_message (ctx,*args):
         return
     
     # invite links blocking
-    if len(re.findall(r"https?://discord.gg/.",ctx.content)) >0:
+    if len(re.findall(r"discord.gg/.",ctx.content)) >0:
         await ctx.delete()
         await ctx.channel.send(embed = stuff.embed('It is forbidden to send links/invitations !!!',Colour.red(),'Breaking the rules'))
         return
