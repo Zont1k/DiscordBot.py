@@ -11,6 +11,7 @@ import html
 import requests
 import json
 import random
+import re
 import tic_tac_toe as ttt
 
 TOKEN = config('TOKEN')
@@ -101,6 +102,19 @@ async def on_ready():
         await sleep(15)
         print("I'm ready!")
 
+        
+@bot.event
+async def on_message (ctx,*args):  
+    if (ctx.author.bot):
+        return
+    
+    # invite links blocking
+    if len(re.findall(r"https?://discord.gg/.",ctx.content)) >0:
+        await ctx.delete()
+        await ctx.channel.send(embed = stuff.embed('It is forbidden to send links/invitations !!!',Colour.red(),'Breaking the rules'))
+        return
+    
+    await bot.process_commands(ctx)    
 
 
 @bot.command()
@@ -359,7 +373,6 @@ async def on_command_error(ctx,error):
     print(ctx.message.content)
     f.write('\n\nERROR: '+str(error)+'\nMessage: '+ctx.message.content+'\n_______________')
     f.close()
-
 
 @bot.command()
 async def load_extension(ctx, extension):
