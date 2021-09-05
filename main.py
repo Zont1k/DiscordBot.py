@@ -5,13 +5,13 @@ from discord.ext import commands
 from decouple import config
 from Cybernator import Paginator
 from asyncio import sleep
-from discord_components import DiscordComponents, Button, ButtonStyle
+from discord_components import DiscordComponents, Button, ButtonStyle, Select
 import sqlite3
 import html
+from discord_components.component import SelectOption
 import requests
 import json
 import random
-import re
 import tic_tac_toe as ttt
 
 TOKEN = config('TOKEN')
@@ -32,53 +32,83 @@ bot.remove_command("help")
 
     #await ctx.send(embed = em)
 
+@bot.command()
+async def select(self, ctx):
+    await ctx.send("Hello test test test",
+    components=
+    [Select(placeholder="Choose what you want to see!",
+                        options=[
+                            SelectOption(
+                                label="Option 1",
+                                value="option1",
+                                description="See option 1",
+                                emoji="😀"
+                            ),
+                            SelectOption(
+                                label="Option 2",
+                                value="option2",
+                                description="See option 2",
+                                emoji="😀"
+                            ),
+                            SelectOption(
+                                label="Option 3",
+                                value="option3",
+                                description="See option 3",
+                                emoji="😀"
+                            ),
+                        ])]
+                        )
+
+
+
+
 
 @bot.command()
 async def ping(ctx):
-     await ctx.send(f'Pong! In {round(bot.latency * 1000)}ms')
+     await ctx.send(f':ping_pong: Ping! In `{round(bot.latency * 1000)}ms`')
 
 @bot.command()
 async def help(ctx):
     await ctx.send(
     embed=discord.Embed(title="Help menu", description="To navigate the pages, use\n buttons below. If for some reason they are not on your device\n are displayed, please update / reinstall the Discord app.", color=discord.Color.blue(), timestamp=ctx.message.created_at),
     components=[
-            Button(style=ButtonStyle.blue, label="Start", emoji="▶️"),
-        ]
-    )
-    response = await bot.wait_for("button_click")
-    if response.channel == ctx.channel:
-        if response.component.label == "Start":
-            await response.respond(
-            embed = discord.Embed(title="⚙️ Guffi", description=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n функциями.  \n **Key Resources**\n  1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**  \n **Developers**\n *`AalbatrossGuy#2021`*\n *`AlxelZot#1111`*\n *`ilesik#6666`*", color=discord.Color.blue(), timestamp=ctx.message.created_at),
-            components=[
             Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
-                ]    
-            ) 
+        ]
+    )
+    await ctx.send('❓ Do you have any questions related to the bot? Go to the support server.'),
     await ctx.send(f'https://discord.gg/wgYFxEHr5q'),
     response = await bot.wait_for("button_click")
     if response.channel == ctx.channel:
         if response.component.label == "Information":
             await response.respond(
-            embed = discord.Embed(title="⚙️ Guffi", description=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n функциями.  \n **Key Resources**\n  1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**  \n **Developers**\n *`AalbatrossGuy#2021`*\n *`AlxelZot#1111`*\n *`ilesik#6666`*", color=discord.Color.blue(), timestamp=ctx.message.created_at),
+            embed = discord.Embed(title="⚙️ Guffi", description=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n functions.  \n **Key Resources**\n  1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**  \n **Developers**\n *`AalbatrossGuy#2021`*\n *`AlxelZot#1111`*\n *`ilesik#6666`*", color=discord.Color.blue(), timestamp=ctx.message.created_at),
             components=[
-            Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
                 ]    
-            ) 
+            )
     response = await bot.wait_for("button_click")
     if response.channel == ctx.channel:
         if response.component.label == "Command":
             await response.respond(
-            embed = discord.Embed(title="≫ Command list ≪", description="**General » g.help General**\n `g.info` `g.invite` `g.ping` `g.support`\n **Moderation » +help Moderation**\n `g.ban` `g.clear` `g.mute` `g.kick` `g.warn`\n `g.add-role`", color=discord.Color.blue(), timestamp=ctx.message.created_at),
+            embed = discord.Embed(title="≫ Command list ≪", description="**General » g.help General**\n `g.info` - bot information\n `g.invite` - useful links\n `g.ping` - ping\n `g.support` - support server link\n **Moderation » g.help Moderation**\n `g.ban` - user ban[g.ban <user>]\n `g.clear` - clearing chat\n `g.mute` - mute user[g.mute <user> (time)]\n `g.kick` - kick user[g.kick <user>]\n `g.warn` - issue user warning\n `g.add-role` - add roles[g. add_role <user> (role/s)]", color=discord.Color.blue(), timestamp=ctx.message.created_at),
             components=[
             Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
-            Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
             Button(style=ButtonStyle.blue, label="Game", emoji="▶️"),
                 ]     
             )
+    response = await bot.wait_for("button_click")
+    if response.channel == ctx.channel:
+        if response.component.label == "Game":
+            await response.respond(
+            embed = discord.Embed(title="Game", description="**`g.popit`** - PoP-It\n**`g.tic_tac_toe`** - Tic Tac Toe game with a bot\n**`g.question`** - you have to answer the questions", color=discord.Color.blue(), timestamp=ctx.message.created_at),
+            components=[
+            Button(style=ButtonStyle.blue, label="Information", emoji="▶️"),
+            Button(style=ButtonStyle.blue, label="Command", emoji="▶️"),
+                ]    
+            ) 
 
         
 
@@ -92,57 +122,30 @@ async def on_ready():
     while not bot.is_closed():
         await bot.change_presence(activity=discord.Game(name=f"{len(bot.guilds)} servers!"))
         await sleep(15)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="| g.help"))
-        await sleep(15)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz"))
-        await sleep(15)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="Spotify"))
-        await sleep(15)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="Minecraft"))
+        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz | g.help"))
         await sleep(15)
         print("I'm ready!")
 
-        
-@bot.event
-async def on_message (ctx,*args):  
-    if (ctx.author.bot):
-        return
-    
-    # invite links blocking
-    if len(re.findall(r"discord.gg/.",ctx.content)) >0:
-        await ctx.delete()
-        await ctx.channel.send(embed = stuff.embed('It is forbidden to send links/invitations !!!',Colour.red(),'Breaking the rules'))
-        return
-    
-    await bot.process_commands(ctx)    
 
 
 @bot.command()
 async def server(ctx):
-        """Shows server info"""
 
-        server = ctx.message.server
-
-        roles = str(len(server.roles))
-        emojis = str(len(server.emojis))
-        channels = str(len(server.channels))
-
-        embed = discord.Embed(title=server.name, description='Server Info', color=0xEE8700)
-        embed.set_thumbnail(url=server.icon_url)
-        embed.add_field(name="Created on:", value=server.created_at.strftime('%d %B %Y at %H:%M UTC+3'), inline=False)
-        embed.add_field(name="Server ID:", value=server.id, inline=False)
-        embed.add_field(name="Users on server:", value=server.member_count, inline=True)
-        embed.add_field(name="Server owner:", value=server.owner, inline=True)
-
-        embed.add_field(name="Default Channel:", value=server.default_channel, inline=True)
-        embed.add_field(name="Server Region:", value=server.region, inline=True)
-        embed.add_field(name="Verification Level:", value=server.verification_level, inline=True)
-
-        embed.add_field(name="Role Count:", value=roles, inline=True)
-        embed.add_field(name="Emoji Count:", value=emojis, inline=True)
-        embed.add_field(name="Channel Count:", value=channels, inline=True)
-
-        await ctx.send(embed=embed)
+    role_count = len(ctx.guild.roles)
+    list_of_bots = [bot.mention for bot in ctx.guild.members if bot.bot]
+        
+    embed = discord.Embed(timestamp=ctx.message.created_at, color=discord.Color.blue())
+    embed.add_field(name='Information about - 'f" {ctx.guild.name}", value=f"{ctx.guild.name}", inline=False)
+    embed.add_field(name='Owner', value=ctx.guild.owner, inline=False)
+    embed.add_field(name='Highest role', value=ctx.guild.roles[-2], inline=False)
+    embed.add_field(name='Contributers:', value=f"{ctx.guild.owner}",inline=False)
+    embed.add_field(name='Number of roles', value=str(role_count), inline=False)
+    embed.add_field(name='Number Of Members', value=ctx.guild.member_count, inline=False)
+    embed.add_field(name='Bots:', value=(', '.join(list_of_bots)))
+    embed.add_field(name='Created At', value=ctx.guild.created_at.__format__('%A, %d. %B %Y @ %H:%M:%S'), inline=False)
+    embed.set_image(url=ctx.guild.icon_url)
+    embed.set_footer(text=ctx.bot.user.name, icon_url=ctx.bot.user.avatar_url)
+    await ctx.send(embed=embed)
 ##########
 ##########
 ###
@@ -157,13 +160,22 @@ async def info(ctx):
             embed = discord.Embed(title="⚙️ Guffi", color=discord.Color.blue(), timestamp=ctx.message.created_at)
 
             embed.add_field(name="```v0.0.1```", value=" **Guffi** - is a multifunctional Discord bot built with\n aim to combine the functionality of many bots into one. The bot has many\n useful features that are suitable for almost any server:\n ranging from moderation to interesting economics. Besides\n the project is actively updated, and every week the bot is filled with new ones\n functions.", inline=False)
-            embed.add_field(name="Key Resources", value=f" 1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**", inline=True)
+            embed.add_field(name="Key Resources", value=f" 1) **[Invite](https://discordapp.com/oauth2/authorize?&client_id=881976979220484096&scope=bot&permissions=0)**\n 2) **[Support server](https://discord.gg/wgYFxEHr5q)**\n 3) **[Documentation](https://app.gitbook.com/@guffi/s/guffi/)**", inline=True)
     
             embed.add_field(name="Developers", value="*AalbatrossGuy#2021*\n *AlxelZot#1111*\n *ilesik#6666*", inline=True)
     
             embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
 
             await ctx.send(embed=embed)
+
+@bot.event
+async def ar(self, ctx, autoroles): #сама команда и что ей надо указать, это prefix, комаду и НАЗВАНИЕ роли.
+    for guild in self.bot.guilds: # оно ищет на сервере людей
+      for member in guild.members: # и тут делается все работа для member-a
+        autoroles2 = discord.utils.get(ctx.message.guild.roles, id = autoroles) # нахождение айди по названию, иначе будет ошибка(у меня)
+        await member.add_roles(autoroles2) # само добавление роли
+    emb = discord.Embed(description = 'Роли успешно добавлены ВСЕМ участникам Discord сервера.')
+    await ctx.send(embed = emb) # теперь бот сообщает что всё вышло.
 
 
 @bot.command()
@@ -181,7 +193,7 @@ async def popit(ctx):
 async def invite(ctx):
             embed = discord.Embed(title="Invite", color=discord.Color.blue())
 
-            embed.add_field(name="-Invite-", value=f" 1) **[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id=838125539847700520&scope=bot&permissions=8)**\n 2) **[Support Server](https://discord.gg/wgYFxEHr5q)**", inline=False)
+            embed.add_field(name="-Invite-", value=f" 1) **[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id=881976979220484096&scope=bot&permissions=0)**\n 2) **[Support Server](https://discord.gg/wgYFxEHr5q)**", inline=False)
     
             embed.add_field(name="-Other Links-", value=" 1) **[Website](https://WebSite-Guffi.zontialekss.repl.co)**\n 2) **[Docs](https://app.gitbook.com/@guffi/s/guffi)**", inline=False)
 
@@ -215,44 +227,26 @@ async def suggest(ctx, *, suggestion):
 @bot.command()
 async def user(ctx,member:discord.Member = None, guild: discord.Guild = None):
     if member == None:
-        emb = discord.Embed(title=ctx.message.author, color=discord.Color.blue(), timestamp=ctx.message.created_at, icon_url=ctx.message.author.avatar_url)
-        emb.add_field(name="💡 ID:", value=f" ```{ctx.message.author.id}``` ",inline=False) 
-        emb.add_field(name="💡 Name:", value=f"```{ctx.message.author.display_name}```",inline=False)
-        emb.add_field(name="💡 Activity:", value=f"```{ctx.message.author.status}```",inline=False)
-        emb.add_field(name="Server role:", value=f"{ctx.message.author.top_role.mention}")
-        emb.add_field(name="Account has been created:", value=ctx.message.author.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),inline=False)
-        emb.set_thumbnail(url=ctx.message.author.avatar_url)
+        emb = discord.Embed(title=ctx.message.author, url="https://discord.com", color=discord.Color.blue(), timestamp=ctx.message.created_at, icon_url=ctx.message.author.avatar_url)
+        emb.add_field(name="ID user:", value=f"{ctx.message.author.id}",inline=True) 
+        emb.add_field(name="Name:", value=f"{ctx.message.author.display_name}",inline=True)
+        emb.add_field(name="Activity:", value=f"{ctx.author.status}",inline=True)
+        emb.add_field(name = "When joined: ", value = f"{ctx.author.joined_at}",inline=True)
+        emb.add_field(name="Account has been created:", value=ctx.message.author.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),inline=True)
+        emb.set_image(url=ctx.message.author.avatar_url)
         emb.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
         await ctx.send(embed = emb)
     else:
-        emb = discord.Embed(title="", color=discord.Color.blue(), timestamp=ctx.message.created_at)
-        emb.add_field(name="User ID:", value=member.id,inline=False)
-        emb.add_field(name="Server role:", value=f"{member.top_role.mention}",inline=False)
-        emb.add_field(name="Account has been created:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),inline=False)
-        emb.set_thumbnail(url=member.avatar_url)
-        emb.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
+        emb = discord.Embed(title=ctx.message.member, color=discord.Color.blue(), timestamp=ctx.message.created_at, icon_url=ctx.message.member.avatar_url)
+        emb.add_field(name="ID user:", value=f"{ctx.message.member.id}",inline=True) 
+        emb.add_field(name="Name:", value=f"{ctx.message.member.display_name}",inline=True)
+        emb.add_field(name="Activity:", value=f"{ctx.member.status}",inline=True)
+        emb.add_field(name="Server role:", value=f"{ctx.member.top_role.mention}",inline=True)
+        emb.add_field(name = "When joined: ", value = f"{ctx.member.joined_at}",inline=True)
+        emb.add_field(name="Account has been created:", value=ctx.message.member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),inline=True)
+        emb.set_image(url=ctx.message.member.avatar_url)
+        emb.set_footer(text=f'Requested by { ctx.message.member.display_name }', icon_url=ctx.message.member.avatar_url)
         await ctx.send(embed = emb)
-
-@bot.command()
-async def userinfo(ctx, *, user: discord.Member = None):
-    if user is None:
-        user = ctx.author      
-    date_format = "%a, %d %b %Y %I:%M %p"
-    embed = discord.Embed(color=0xdfa3ff, description=user.mention)
-    embed.set_author(name=str(user), icon_url=user.avatar_url)
-    embed.set_thumbnail(url=user.avatar_url)
-    embed.add_field(name="Joined", value=user.joined_at.strftime(date_format))
-    members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
-    embed.add_field(name="Join position", value=str(members.index(user)+1))
-    embed.add_field(name="Registered", value=user.created_at.strftime(date_format))
-    if len(user.roles) > 1:
-        role_string = ' '.join([r.mention for r in user.roles][1:])
-        embed.add_field(name="Roles [{}]".format(len(user.roles)-1), value=role_string, inline=False)
-    perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in user.guild_permissions if p[1]])
-    embed.add_field(name="Guild permissions", value=perm_string, inline=False)
-    embed.set_footer(text='ID: ' + str(user.id))
-    return await ctx.send(embed=embed)
-
 
 
 
@@ -314,7 +308,7 @@ async def tic_tac_toe(ctx):
     ttt_bot = ttt.Bot(field)
     if not field.is_payer_turn():
         ttt_bot.make_move()
-    message = await ctx.send(embed = Embed(title = 'Game "Tic Tac Toe" (30 seconds per stroke)',color = Colour.gold()),
+    message = await ctx.send(embed = Embed(title = 'Game "Tic Tac Toe" (30 seconds per stroke)',color = Colour.blue()),
     components = buttons())
     try:
         while True:
@@ -374,6 +368,7 @@ async def on_command_error(ctx,error):
     f.write('\n\nERROR: '+str(error)+'\nMessage: '+ctx.message.content+'\n_______________')
     f.close()
 
+
 @bot.command()
 async def load_extension(ctx, extension):
     bot.load_extension(f'Cogs.{extension}')
@@ -390,3 +385,4 @@ for filename in os.listdir( os.path.abspath(os.curdir)+"\\Cogs"):
         
 
 bot.run(TOKEN)
+
