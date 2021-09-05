@@ -4,3 +4,4 @@ discord~=1.0.1
 python-decouple==3.4
 tic-tac-toe-api-bot==0.2.6.2
 Cybernator
+discord_components
