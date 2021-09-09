@@ -156,3 +156,19 @@ _______________
 ERROR: Command "ping" is not found
 Message: g.ping
 _______________
+
+ERROR: Command raised an exception: ImportError: cannot import name 'ch_engine' from '__main__' (c:\Users\ruslan\Desktop\DiscordBotGuffi\main.py)
+Message: c.chess
+_______________
+
+ERROR: Command raised an exception: Forbidden: 403 Forbidden (error code: 50001): Missing Access
+Message: c.chess
+_______________
+
+ERROR: Command raised an exception: Forbidden: 403 Forbidden (error code: 50001): Missing Access
+Message: c.chess
+_______________
+
+ERROR: Command raised an exception: Forbidden: 403 Forbidden (error code: 50001): Missing Access
+Message: c.chess
+_______________
