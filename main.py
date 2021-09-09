@@ -24,7 +24,7 @@ import io
 
 is_windows = hasattr(sys, 'getwindowsversion')
 TOKEN = config('TOKEN')
-bot = commands.Bot(command_prefix="c.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520','521291273777446922'])
+bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520','521291273777446922'])
 bot.remove_command("help")
 
 
