@@ -1,3 +1,15 @@
+###################
+###################
+###
+###
+###  ADMIN/OWNER COMMAND
+###
+###
+###################
+###################
+
+
+
 import discord
 from discord.ext import commands
 from decouple import config
@@ -44,10 +56,10 @@ class AdminCommands(commands.Cog):
             embed = discord.Embed(title="Kick a user out of the server.", color=discord.Color.blue(), timestamp=ctx.message.created_at)
             embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/851162534483722301/873200179489148979/avatar-cara-monstruo-dibujos-animados-monstruo-halloween_6996-1122.jpg")
 
-            embed.add_field(name="Delay:", value="```3 sec.```", inline=False)
-            embed.add_field(name="Aliases:", value="```Absent```", inline=False)
+            embed.add_field(name="Delay:", value="`3 sec.`", inline=False)
+            embed.add_field(name="Aliases:", value="`Absent`", inline=False)
     
-            embed.add_field(name="Usage", value="**```kick <user> [cause]```**", inline=False)
+            embed.add_field(name="Usage", value="**`kick <user> [cause]`**", inline=False)
     
             embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
 
@@ -76,11 +88,11 @@ class AdminCommands(commands.Cog):
             embed = discord.Embed(title="Ban a user on the server.", color=discord.Color.blue(), timestamp=ctx.message.created_at)
             embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/851162534483722301/873200179489148979/avatar-cara-monstruo-dibujos-animados-monstruo-halloween_6996-1122.jpg")
 
-            embed.add_field(name="Delay:", value="```3 sec.```", inline=False)
-            embed.add_field(name="Aliases:", value="```Absent```", inline=False)
+            embed.add_field(name="Delay:", value="`3 sec.`", inline=False)
+            embed.add_field(name="Aliases:", value="`Absent`", inline=False)
     
-            embed.add_field(name="Usage", value="**```ban <user> [cause]```**", inline=False)
-            embed.add_field(name="Required rights", value="```Ban participants```", inline=False)
+            embed.add_field(name="Usage", value="**`ban <user> [cause]`**", inline=False)
+            embed.add_field(name="Required rights", value="`Ban participants`", inline=False)
     
             embed.set_footer(text=f'Requested by { ctx.message.author.display_name }', icon_url=ctx.message.author.avatar_url)
 
