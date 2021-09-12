@@ -26,8 +26,24 @@ import io
 
 is_windows = hasattr(sys, 'getwindowsversion')
 TOKEN = config('TOKEN')
-bot = commands.Bot(command_prefix="&", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520','521291273777446922'])
+bot = commands.Bot(command_prefix="g.", case_insensitive=True, owner_ids=['564380749873152004', '676414187131371520','521291273777446922'])
 bot.remove_command("help")
+
+
+def embed(text,color = Colour.gold(),title ='',emoji = ''):
+    if color == Colour.red():
+        emoji = ":x:"
+    elif color == Colour.green():
+        emoji = ":white_check_mark:"
+    if len(list(emoji))!=0:
+        emoji +='| '
+    embed = discord.Embed(description =  emoji+'**'+text+"**" , color = color, title = title)
+    return embed
+
+
+
+
+
 
 @bot.event
 async def on_ready():
@@ -37,7 +53,7 @@ async def on_ready():
     print('_________________________________')
     print('starting chess engine...')
     if is_windows:
-        transport, ch_engine = await ch_eng.popen_uci("\Engines\chess\stockfish\stockfish.exe")
+        transport, ch_engine = await ch_eng.popen_uci("./Engines\chess\stockfish\stockfish.exe")
     else:
         transport, ch_engine = await ch_eng.popen_uci("./Engines/chess/stockfish/stockfish")
     print('chess engine started')
@@ -71,7 +87,7 @@ async def load_extension(ctx, extension):
 async def unload_extension(ctx, extension):
     bot.unload_extension(f'Cogs.{extension}')
 
-for filename in os.listdir( os.path.abspath(os.curdir)+"\\DiscordBotGuffi\\Cogs"):
+for filename in os.listdir( os.path.abspath(os.curdir)+"//Cogs"):
     if filename.endswith('.py'):
         bot.load_extension(f'Cogs.{filename[:-3]}')
 

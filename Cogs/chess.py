@@ -33,7 +33,7 @@ import psutil
 import sys
 from PIL import Image, ImageDraw
 import io
-from __main__ import bot
+from __main__ import bot,embed
 
 is_windows = hasattr(sys, 'getwindowsversion')
 
@@ -42,32 +42,9 @@ class ChessCommand(commands.Cog):
         self.client = client
 
 
-@bot.event
-async def on_ready():
-    global ch_engine
-    DiscordComponents(bot)
-    t = time.time()
-    print('_________________________________')
-    print('starting chess engine...')
-    if is_windows:
-        transport, ch_engine = await ch_eng.popen_uci("\Engines\chess\stockfish\stockfish.exe")
-    else:
-        transport, ch_engine = await ch_eng.popen_uci("./Engines/chess/stockfish/stockfish")
-    print('chess engine started')
-    print('time to start chess engine:',time.time()-t)
-    print('_________________________________')
-    print("Bot is ready!")
-    print('time to start bot:',time.time()-t)
-    while not bot.is_closed():
-        await bot.change_presence(activity=discord.Game(name=f"{len(bot.guilds)} servers!"))
-        await sleep(15)
-        await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="https://guffibot.xyz | g.help"))
-        await sleep(15)
-        print("I'm ready!")
-
-
 @bot.command(pass_context= True)
 async def chess(ctx):
+    from __main__ import ch_engine
     board = ch.Board()
     message = await ctx.send(embed = embed('Choose the difficulty of the bot'),components = [[Button(label='1',style=ButtonStyle.blue),Button(label='2',style=ButtonStyle.blue),Button(label='3',style=ButtonStyle.blue)]])
     try:
@@ -273,17 +250,6 @@ async def chess(ctx):
         await ctx.send(embed = embed('You have been thinking too long',Colour.red(),'Time is over'))
         return
 
-
-
-def embed(text,color = Colour.gold(),title ='',emoji = ''):
-        if color == Colour.red():
-            emoji = ":x:"
-        elif color == Colour.green():
-            emoji = ":white_check_mark:"
-        if len(list(emoji))!=0:
-            emoji +='| '
-        embed = discord.Embed(description =  emoji+'**'+text+"**" , color = color, title = title)
-        return embed
 
 
     
