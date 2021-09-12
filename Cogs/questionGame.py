@@ -2,7 +2,7 @@
 ###################
 ###
 ###
-###  TICTACTOE COMMAND
+###  QUESTION COMMAND
 ###
 ###
 ###################
@@ -20,7 +20,6 @@ from discord import Colour
 from discord.embeds import Embed
 from discord_components import DiscordComponents, Button, ButtonStyle
 import tic_tac_toe as ttt
-from __main__ import embed
 import html
 
 class QuestCommand(commands.Cog):
