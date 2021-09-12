@@ -172,3 +172,7 @@ _______________
 ERROR: Command raised an exception: Forbidden: 403 Forbidden (error code: 50001): Missing Access
 Message: c.chess
 _______________
+
+ERROR: Command "tic_tac_tore" is not found
+Message: c.tic_tac_tore
+_______________
