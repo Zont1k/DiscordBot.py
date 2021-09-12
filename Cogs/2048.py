@@ -58,7 +58,7 @@ async def _2048(ctx):
 
                     st_s = 96
                     while True:
-                        font = ImageFont.truetype("./data/fonts/arial.ttf", st_s)
+                        font = ImageFont.truetype("./Fonts/arial.ttf", st_s)
                         w, h = img1.textsize(str(game.get_map()[y][x]),font=font)
                         if h>sector_size/1.2 or (w > sector_size and  sector_size/2 < h and w > sector_size):
                             st_s = int(st_s/2)
